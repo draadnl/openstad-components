@@ -28,6 +28,7 @@ export default class IdeasForm extends React.Component {
       descriptionMinLength: 140,
       descriptionMaxLength: 5000,
       fields: [],
+      enableAddressSearchClickEvent: true,
     };
 		self.config = merge.recursive(self.defaultConfig, self.config, props.config || {})
     self.config.fields = [ ...self.config.fields ];
@@ -281,13 +282,17 @@ export default class IdeasForm extends React.Component {
             {self.state.formfields.user && self.state.formfields.user.fullName}
           </div>
 
-          <div className="osc-form-group">
-					  <h2>
-            Een locatie vlakbij
-					  </h2>
-            {self.state.formfields.address || 'Geen adres gevonden'}
-						<div className="osc-form-warning" style={{ display: 'none' }} ref={ el => this['form-warning-location'] = el  }>Geen locatie geselecteerd</div>
-          </div>
+          {self.config.enableAddressSearchClickEvent &&
+            <div className="osc-form-group">
+              <h2>
+                Een locatie vlakbij
+              </h2>
+              {self.state.formfields.address || 'Geen adres gevonden'}
+              <div className="osc-form-warning" style={{display: 'none'}}
+                   ref={el => this['form-warning-location'] = el}>Geen locatie geselecteerd
+              </div>
+            </div>
+          }
 
           {formHTML}
 
