@@ -30,6 +30,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       canSelectLocation: true,
       types: [],
       typeField: null,
+      search: {
+        city: "amsterdam"
+      },
 
       // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
       // currentPolygon: undefined,
@@ -409,7 +412,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		});
 
     // search for addresses
-    fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:amsterdam&fq=*:*&q=' + searchValueLc, {
+    fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/suggest?rows=5&fq=gemeentenaam:${this.config.search.city}&fq=*:*&q=${searchValueLc}`, {
       headers: {
         'Content-Type': 'application/json',
       },
