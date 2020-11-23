@@ -30,6 +30,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       canSelectLocation: true,
       types: [],
       typeField: null,
+      enableAddressSearchClickEvent: true,
       search: {
         city: "amsterdam"
       },
@@ -490,12 +491,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     self.map.setSelectedLocation(location)
     if (self.ideaform) {
       if (!location) return;
-      self.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
-			self.map.getPointInfo(location, null, function(json, marker) {
-				let address = json && json._display || 'Geen adres gevonden';
-				self.state.editIdea.address = address;
-				self.ideaform.handleLocationChange({ location, address: address });
-			})
+      this.setAddress(location);
     }
   }
 
@@ -506,18 +502,20 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       if (idea) {
         self.map.fadeMarkers({exception: [idea.location]});
         // xxx
-        if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
+        if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });
         if (self.infoblock) {
           self.setState({ editIdea: self.state.editIdea });
           if (idea.location) {
             self.infoblock.setNewIdea({ ...self.state.editIdea, address: 'Bezig met adresgegevens ophalen...' });
-            self.map.getPointInfo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, null, function(json, marker) {
-              let address = json && json._display || 'Geen adres gevonden';
-              let editIdea = self.state.editIdea;
-              editIdea.address = address;
-              self.setState({ editIdea });
-              self.infoblock.setNewIdea({ ...self.state.editIdea, address });
-            })
+            if(self.config.enableAddressSearchClickEvent) {
+              self.map.getPointInfo({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] }, null, function(json, marker) {
+                let address = json && json._display || 'Geen adres gevonden';
+                let editIdea = self.state.editIdea;
+                editIdea.address = address;
+                self.setState({ editIdea });
+                self.infoblock.setNewIdea({ ...self.state.editIdea, address });
+              })
+            }
           } else {
             self.infoblock.setNewIdea({ ...self.state.editIdea, address: 'Geen locatie geselecteerd...' });
           }
@@ -710,16 +708,24 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   };
 
   onEditIdeaClick(idea) {
+    console.log('on edit idea click');
+    console.log('on edit idea click');
     let self = this;
     let location = { lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] };
     self.showIdeaForm(idea, () => {
-      self.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
-		  self.map.getPointInfo(location, null, function(json, marker) {
-			  let address = json && json._display || 'Geen adres gevonden';
-			  self.state.editIdea.address = address;
-			  self.ideaform.handleLocationChange({ location, address: address });
-		  })
+      self.setAddress(location);
     });
+  };
+
+  setAddress(location) {
+    if (this.enableAddressSearchClickEvent) {
+      this.ideaform.handleLocationChange({location, address: 'Bezig met adresgegevens ophalen...'});
+      this.map.getPointInfo(location, null, (json, marker) => {
+        const address = json && json._display || 'Geen adres gevonden';
+        this.state.editIdea.address = address;
+        this.ideaform.handleLocationChange({location, address: address});
+      })
+    }
   };
 
   onIdeaDeleted(ideaId) {
@@ -743,19 +749,15 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     // this.showIdeaDetails(idea);
     document.location.href = "#D" + idea.id
   };
-  
+
   onNewIdeaClick({ typeId }) {
     let self = this;
     let editIdea = this.state.editIdea || {};
     editIdea.typeId = typeId;
     self.showIdeaForm(editIdea, () => {
-      let location = { lat: this.state.editIdea.location.coordinates[0], lng: this.state.editIdea.location.coordinates[1] };
-      self.ideaform.handleLocationChange({ location, address: 'Bezig met adresgegevens ophalen...' });
-		  self.map.getPointInfo(location, null, function(json, marker) {
-			  let address = json && json._display || 'Geen adres gevonden';
-			  self.state.editIdea.address = address;
-			  self.ideaform.handleLocationChange({ location, address: address });
-		  })
+
+      const location = { lat: this.state.editIdea.location.coordinates[0], lng: this.state.editIdea.location.coordinates[1] };
+      self.setAddress(location);
     });
   };
 
@@ -891,7 +893,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 
       case 'idea-form':
         infoHTML = (
-			    <IdeaForm id={this.divId + '-infoblock'} config={{ siteId: this.config.siteId, user: this.config.user, api: this.config.api, ...this.config.idea, types: this.config.types, typeField: this.config.typeField }} idea={{ ...this.state.editIdea, user: this.state.editIdea && this.state.editIdea.user || this.config.user }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideaform = el)}/>
+			    <IdeaForm id={this.divId + '-infoblock'} config={{ siteId: this.config.siteId, user: this.config.user, api: this.config.api, ...this.config.idea, types: this.config.types, typeField: this.config.typeField, enableAddressSearchClickEvent: this.config.enableAddressSearchClickEvent }} idea={{ ...this.state.editIdea, user: this.state.editIdea && this.state.editIdea.user || this.config.user }} id="osc-ideas-on-map-info" className="osc-ideas-on-map-info" mobileState={this.state.mobileState} ref={el => (this.ideaform = el)}/>
         );
         filterHTML = (
 				  <div className="osc-ideas-on-map-filterbar"><div className="osc-backbutton" onClick={() => this.hideIdeaForm()}>Terug naar {this.state.editIdea && typeof this.state.editIdea.id == 'number' ? 'idee' : 'overzicht'}</div></div>
