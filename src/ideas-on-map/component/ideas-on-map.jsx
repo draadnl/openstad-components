@@ -174,7 +174,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 		document.addEventListener('osc-map-cluster-click', function(event) {
       self.onClusterClick(event.detail);
     });
-    
+
     // handle filter changes
 		document.addEventListener('typeFilterUpdate', function(event) {
       self.onChangeTypeFilter(event.detail.value);
@@ -234,7 +234,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       document.location.href = "#";
       self.onNewIdeaStored(event.detail.idea);
     });
-    
+
 	}
 
   fetchData({ showIdeaDetails, showIdeaSelected }) {
@@ -433,9 +433,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         console.log('Search failed:', err);
         callback(searchValue, searchResult)
       });
-    
+
     function onClickAddress(id) {
-      fetch('https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:amsterdam&&id=' + id, {
+      fetch(`https://geodata.nationaalgeoregister.nl/locatieserver/v3/lookup?fq=gemeentenaam:${self.config.search.city}&id=${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -455,9 +455,9 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
           console.log('Search failed:', err);
           callback(searchValue, searchResult)
         });
-      
+
     }
-		
+
 	}
 
   // dit is opgezet maar wordt niet genbruikt en is daarom niet afgemaakt; latere wijzigingen maken dat dit niet meer werkt
@@ -506,7 +506,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       if (idea) {
         self.map.fadeMarkers({exception: [idea.location]});
         // xxx
-        if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });  
+        if (idea.location) self.setSelectedLocation({ lat: idea.location.coordinates[0], lng: idea.location.coordinates[1] });
         if (self.infoblock) {
           self.setState({ editIdea: self.state.editIdea });
           if (idea.location) {
@@ -552,7 +552,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       }
     }
   }
-  
+
 	onMapClick(event, forceSelectLocation) {
 
 		if ( this.state.mobileState == 'opened' ) { // werkt omdat hij alleen op mobiel opend kan zijn
@@ -697,7 +697,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
       this.setSelectedLocation(null);
     });
   }
-  
+
   onIdeaClick(idea) {
     // let showDetails = this.state.status == 'location-selected' || this.state.status == 'idea-selected';
     if (this.state.editIdea) this.setNewIdea(null);
@@ -743,7 +743,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     // this.showIdeaDetails(idea);
     document.location.href = "#D" + idea.id
   };
-  
+
   onNewIdeaClick({ typeId }) {
     let self = this;
     let editIdea = this.state.editIdea || {};
@@ -782,7 +782,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
     let idea = this.state.ideas.find( idea => idea.id == data.ideaId );
     idea.argCount--;
   }
-  
+
   onChangeTypeFilter(value) {
 
     let self = this;
@@ -833,7 +833,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
   onClickBackToOverview(idea) {
     document.location.href='#S'+this.state.currentIdea.id;
   }
-  
+
   onClickMobileSwitcher() {
     let self = this;
     if (self.infoblock) self.infoblock.setState({ mobileState: self.state.mobileState == 'closed' ? 'opened' : 'closed' })
@@ -920,10 +920,10 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
                 loginLink = "javascript: document.location.href = '/oauth/login?returnTo=' + encodeURIComponent(document.location.href)";
               }
             }
-            
+
             contentHTML = contentHTML.replace(/\{address\}/g, this.state.editIdea.address || '');
             contentHTML = contentHTML.replace(/\{loginLink\}/g, loginLink);
-            
+
             contentHTML = OpenStadComponentLibs.reactTemplate({ html: contentHTML, addButton, loginButton })
 
             mobilePopupHTML = (
@@ -957,7 +957,7 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
         );
         mobilePopupHTML = null;
         break;
-            
+
     }
 
     let divStyle = {};
