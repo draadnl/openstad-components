@@ -201,6 +201,25 @@ export default class IdeasDetails extends React.Component {
       });
 
   }
+  
+  scrollToReactions (event) {
+    let reactions = document.querySelector('#reactions');
+    
+    event.preventDefault();
+    
+    if (!reactions) {
+      return;
+    }
+    
+    // TODO: .osc-ideas-on-map-info might not be unique, but does not have an ID
+    // Even though the id #osc-ideas-on-map-info is used throughout other components
+    document.querySelector('.osc-ideas-on-map-info').scroll({
+      behavior: 'smooth',
+      left: 0,
+      top: reactions.offsetTop
+    });
+    
+  }
 
 	render() {
 
@@ -283,7 +302,7 @@ export default class IdeasDetails extends React.Component {
       reactionsCountHTML = (
         <div>
           <h3>Reacties</h3>
-          <a href="#reactions" className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
+          <a onClick={(event) => self.scrollToReactions(event)} className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
         </div>
       );
     }
