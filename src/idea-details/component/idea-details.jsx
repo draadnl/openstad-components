@@ -302,7 +302,7 @@ export default class IdeasDetails extends React.Component {
       reactionsCountHTML = (
         <div>
           <h3>Reacties</h3>
-          <a onClick={(event) => self.scrollToReactions(event)} className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
+          <a href="#" onClick={(event) => self.scrollToReactions(event)} className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
         </div>
       );
     }
