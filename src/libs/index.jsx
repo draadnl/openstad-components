@@ -17,7 +17,7 @@ import user from './lib/user/index.js';
 import ideasSort from './lib/ideas-sort.js';
 import localStorage from './lib/local-storage.js';
 import sessionStorage from './lib/session-storage.js';
-import reactTemplate from './lib/react-template.js';
+import reactTemplate from './lib/react-template.jsx';
 
 let OpenStadComponentLibs = {
   api,
