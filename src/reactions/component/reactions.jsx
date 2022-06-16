@@ -27,7 +27,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       placeholder: '',
       formIntro: '',
 
-      emptyListText: 'Nog geen argumenten',
+      emptyListText: 'Plaats de eerste reactie!',
       isReplyingEnabled: true,
       isVotingEnabled: true,
       

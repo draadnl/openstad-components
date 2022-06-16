@@ -127,6 +127,30 @@ export default class IdeasOverview extends OpenStadComponent {
             {idea.argCount || 0}
           </div>);
       }
+
+        // stats = stats.map((obj, i) => {
+        //   if (i === 0) {
+        //     console.log( obj.props.children );
+            // const newValue = obj.props.children.replace(
+            //     /\[object Object]/g,
+            //     ''
+            // );
+            //const newValue = obj.props.children + 1;
+            //return {...obj.props, children: obj.props.children};
+        //   }
+        //
+        //   return obj;
+        // });
+
+
+
+      if (typeof stats[0].props.children === 'string'){
+        stats[0].props.children = stats[0].props.children.replaceAll(
+            '[object Object]',
+            ''
+        );
+      }
+
       statsHTML = (
         <div className="osc-idea-stats-container">
           { stats.map((statHTML, i) => {

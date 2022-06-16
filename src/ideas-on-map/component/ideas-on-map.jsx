@@ -383,7 +383,6 @@ export default class OpenStadComponentIdeasOnMap extends OpenStadComponent {
 	      document.dispatchEvent(event);
       }
     });
-        
   }
   
   showIdeaDetails(idea) {

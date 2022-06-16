@@ -21,7 +21,7 @@ export default class OpenStadComponentSelect extends OpenStadComponentDefaultInp
 
     return (
 			<div className="osc-select">
-			  <select value={this.state.value || ''} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>
+			  <select value={this.state.value || ''} required={this.config.required ? 'required' : ''} disabled={this.props.disabled} placeholder={this.config.placeholder} onChange={e => self.handleOnChange({ value: self.input.value })} ref={el => (self.input = el)}>
           {self.config.choices.map( (choice, i) => {
             let text = choice.description || choice.title || choice.value;
             return <option value={choice.value || ''} key={`${text}-${choice.value}-${i}`}>{text}</option>

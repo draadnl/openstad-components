@@ -58,8 +58,8 @@ export default class IdeasForm extends OpenStadComponent {
 
     let titleField = fields.find(field => field.name == 'title');
     if (titleField) {
-		  titleField.minLength = self.config.idea.titleMinLength;
-		  titleField.maxLength = self.config.idea.titleMaxLength;
+      titleField.minLength = 0;
+      titleField.maxLength = self.config.idea.titleMaxLength;
     }
 
     let summaryField = fields.find(field => field.name == 'summary');
@@ -70,14 +70,23 @@ export default class IdeasForm extends OpenStadComponent {
 
     let descriptionField = fields.find(field => field.name == 'description');
     if (descriptionField) {
-		  descriptionField.minLength = self.config.idea.descriptionMinLength;
+		  descriptionField.minLength = 0;
 		  descriptionField.maxLength = self.config.idea.descriptionMaxLength;
+		  descriptionField.required = false;
+		  descriptionField.value = 'Dit is de oplossing voor mijn knelpunt';
+    }
+
+    let visibleDescription = fields.find(field => field.name == 'extraData.visibleDescription');
+    if (visibleDescription) {
+      visibleDescription.minLength = 0;
+      visibleDescription.maxLength = 700;
     }
 
     let imageField = fields.find(field => field.inputType == 'image-upload'); // TODO: multiple images?
     if (imageField) {
 		  imageField.config = imageField.config || {};
 		  imageField.config.image = self.config.image;
+		  imageField.config.required = false;
     }
 
     if (OpenStadComponentLibs.user.hasRole( self.config.user, 'editor' ) ) {
@@ -230,6 +239,14 @@ export default class IdeasForm extends OpenStadComponent {
       if (typeof this.state.formfields.id == 'number') {
         method = 'PUT';
         url = url + '/' + this.state.formfields.id;
+      }
+
+      if ( typeof body['description'] === "undefined" ) {
+        body['description'] = "Niet meer leeg";
+      }
+
+      if ( typeof body['title'] === "undefined" ) {
+        body['title'] = self.state.formfields.address;
       }
 
       fetch(url, {

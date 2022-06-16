@@ -93,6 +93,11 @@ export default class IdeasDetails extends OpenStadComponent {
 		document.removeEventListener('osc-poll-deleted', this.pollDeletedListener);
   }
 
+  scrollToReactions() {
+    var elmntToView = document.getElementById("reactions");
+    elmntToView.scrollIntoView();
+  }
+
   dispatchEditIdeaButtonClick(e) {
     e.stopPropagation();
     if ( this.config.editIdeaLink ) {
@@ -290,7 +295,7 @@ export default class IdeasDetails extends OpenStadComponent {
       reactionsCountHTML = (
         <div>
           <h3>Reacties</h3>
-          <a href="#reactions" className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
+          <a href="javascript:void(0)" onClick={this.scrollToReactions.bind(this)} className="osc-no-of-reactions">{idea.argCount || 0} reacties</a>
         </div>
       );
     }
@@ -342,6 +347,20 @@ export default class IdeasDetails extends OpenStadComponent {
       metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
     }
 
+    let solutionText = '';
+    let solutionText2 = '';
+    if ( idea.extraData.visibleDescription ) {
+      solutionText = <span className="solution">Oplossing: </span>
+      solutionText2 = <p className="osc-details-description" dangerouslySetInnerHTML={{ __html: idea.extraData.visibleDescription }}></p>
+    }
+
+    let solutionType = '';
+    let solutionType2 = '';
+    if ( idea.extraData.typesolution && idea.extraData.typesolution !== '0' ) {
+      solutionType = <span className="solution-type">Type oplossing: </span>
+      solutionType2 = <p className="osc-details-type">{idea.extraData.typesolution}</p>
+    }
+
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
 
@@ -378,7 +397,11 @@ export default class IdeasDetails extends OpenStadComponent {
 
             <p className="osc-details-summary">{idea.summary}</p>
 
-            <p className="osc-details-description" dangerouslySetInnerHTML={{ __html: idea.description }}></p>
+            {solutionText}
+            {solutionText2}
+            <div className="text-spacer"></div>
+            {solutionType}
+            {solutionType2}
 
             {addPollButtonHTML}
 
