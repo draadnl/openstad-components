@@ -336,8 +336,9 @@ export default class IdeasDetails extends OpenStadComponent {
 
     let metaDataHTML = self.config.idea.metaDataTemplate;
     if (metaDataHTML) {
+      let themeName = typeof(idea.extraData.theme !== 'undefined') ? idea.extraData.theme : '';
       metaDataHTML = metaDataHTML.replace(/\{createDate\}/, idea.createDateHumanized);
-      metaDataHTML = metaDataHTML.replace(/\{theme\}/, idea.extraData.theme);
+      metaDataHTML = metaDataHTML.replace(/\{theme\}/, themeName);
       metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
     }
 

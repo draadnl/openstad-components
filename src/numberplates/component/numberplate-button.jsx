@@ -35,7 +35,7 @@ export default class OpenStadComponentNumberplateButton extends OpenStadComponen
     let labelHTML = null;
     if (self.config.label) {
       let label = typeof self.props.label != 'undefined' ? self.props.label : self.state.label;
-      labelHTML = <div className="osc-numberplate-button-label"><div className="osc-elipsis">{self.config.label}</div></div>
+      labelHTML = <div className="osc-button-label">{self.config.label}</div>
     }
 
     let url = typeof self.props.url != 'undefined' ? self.props.url : self.state.url;
