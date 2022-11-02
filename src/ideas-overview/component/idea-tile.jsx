@@ -88,20 +88,11 @@ export default class IdeasOverview extends OpenStadComponent {
     if (self.config.display.showStatusLabel) {
     }
 
-    // theme and area
-    let themeAndAreaHTML = null;
-    if (self.config.display.showTheme || self.config.display.showArea) {
-      let areaHTML = null;
-      if (self.config.display.showArea && idea.extraData.area) {
-        areaHTML = <div className="osc-area">{idea.extraData.area}</div>
-      }
-      themeAndAreaHTML = (
+    // theme
+      let themeAndAreaHTML = (
         <div className="osc-theme-and-area">
-          { self.config.display.showTheme && idea.extraData.theme && (<div className="osc-theme">{idea.extraData.theme}</div>) }
-          { self.config.display.showTheme && idea.extraData.theme && self.config.display.showArea && idea.extraData.area && (<div className="osc-divider"></div>) }
-          { self.config.display.showArea && idea.extraData.area && (<div className="osc-area">{idea.extraData.area}</div>) }
+          {  idea.extraData.theme && (<div className="osc-theme">{idea.extraData.theme}</div>) }
         </div>);
-    }
 
     // stats: no of votes and reactions
     let statsHTML = null;
@@ -178,14 +169,17 @@ export default class IdeasOverview extends OpenStadComponent {
           <OpenStadComponentIdeaImage config={this.config} idea={idea} key={'image-' + idea.id}/>
         </div>
         <div className="osc-idea-tile-content">
-          {statusLabelHTML}
-          <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
           {themeAndAreaHTML}
+          <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
+
+          <div className="osc-details-date-location">
+            <span>1-6-2022</span>
+            <span>Van Lennepweeg</span>
+          </div>
+
           <div className="osc-summary">
             { eval(`idea.${self.config.idea.summaryField}`) }
           </div>
-          {voteProgressHTML}
-          {statsHTML}
         </div>
         <div className="osc-idea-tile-content-alt">
           <div className="osc-idea-image-container">
@@ -193,9 +187,7 @@ export default class IdeasOverview extends OpenStadComponent {
           </div>
           <h4 className="osc-title">{ eval(`idea.${self.config.idea.titleField}`) }</h4>
           { eval(`idea.${self.config.idea.summaryField}`) }
-          {statsHTML}
         </div>
-        {typeIconHTML}
       </div>
     );
 

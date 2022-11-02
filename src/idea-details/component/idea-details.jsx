@@ -342,6 +342,9 @@ export default class IdeasDetails extends OpenStadComponent {
       metaDataHTML = OpenStadComponentLibs.reactTemplate({ html: metaDataHTML, username: authorHTML })
     }
 
+    console.log( self.config.idea );
+    console.log( idea );
+
     return (
 			<div id={self.id} className={self.props.className || 'osc-info-block-idea-details'} ref={el => (self.instance = el)}>
 
@@ -350,43 +353,40 @@ export default class IdeasDetails extends OpenStadComponent {
 			  <div className="osc-idea-details-container">
 			    <div className="osc-idea-details">
 
+                  <div className="osc-theme-and-area">
+                    {  idea.extraData.theme && (<div className="osc-theme">{idea.extraData.theme}</div>) }
+                  </div>
+
 				    <h2>{eval(`idea.${self.config.titleField}`)}</h2>
 
-            <div className="osc-details-image-and-stats">
+                  <div className="osc-details-date-location">
+                    <span>1-6-2022</span>
+                    <span>Van Lennepweeg</span>
+                  </div>
 
-              <div className="osc-idea-image-container">
-                <OpenStadComponentIdeaImage config={self.config} idea={idea}/>
-              </div>
+                  <p className="osc-details-summary">{idea.summary}</p>
 
-              {labelHTML}
+                </div>
 
-              {shareButtonsHTML}
+                <div className="osc-idea-details">
 
-              <div className="osc-details-stats">
-                {voteButtonsHTML}
-                {reactionsCountHTML}
-                {editButtonsHTML}
-              </div>
+                <div className="osc-details-info">
+                  { !!idea.extraData.team && (<p className="osc-details-team"><strong>Kernteam</strong>: {idea.extraData.team}</p>)}
+                  { !!idea.extraData.status && (<p className="osc-details-team"><strong>Status</strong>: {idea.extraData.status}</p>)}
+                 </div>
+
+                <p className="osc-details-description" dangerouslySetInnerHTML={{ __html: idea.description }}></p>
+
+                <div className="osc-details-image-and-stats">
+                  <div className="osc-idea-image-container">
+                    <OpenStadComponentIdeaImage config={self.config} idea={idea}/>
+                  </div>
+                </div>
 
             </div>
 
-            <p className="">
-              {metaDataHTML}
-            </p>
-
-            {modBreakHTML}
-
-            <p className="osc-details-summary">{idea.summary}</p>
-
-            <p className="osc-details-description" dangerouslySetInnerHTML={{ __html: idea.description }}></p>
-
-            {addPollButtonHTML}
-
-			    </div>
-
-          {pollHTML}
-
-          {reactionsHTML}
+                { editButtonsHTML }
+                { reactionsHTML }
 
 			    <div className="osc-bottom-spacer"></div>
 
