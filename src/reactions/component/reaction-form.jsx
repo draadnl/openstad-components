@@ -56,7 +56,7 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
 
       if (!self.canSubmit()) return alert('Je bent niet ingelogd');
 
-      let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument${   self.config.argumentId ? `/${  self.config.argumentId}` : ''}`;
+      let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/34/argument${   self.config.argumentId ? `/${  self.config.argumentId}` : ''}`;
       let headers = OpenStadComponentLibs.api.getHeaders(self.config);
       let method = self.config.argumentId ? 'PUT' : 'POST';
 
@@ -144,7 +144,7 @@ export default class OpenStadComponentReactionForm extends OpenStadComponent {
       let loginUrl = OpenStadComponentLibs.auth.getLoginUrl(self.config);
       submitButtonHTML = (
         <div className="osc-align-right-container">
-          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', self.config.ideaId); document.location.href = loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
+          <button onClick={() => { OpenStadComponentLibs.localStorage.set('osc-login-pending-scroll-to-reactions', true); OpenStadComponentLibs.localStorage.set('osc-login-pending-show-details', 34); document.location.href = loginUrl; }} className="osc-button-blue osc-not-logged-in-button">Inloggen</button>
         </div>
       );
     }

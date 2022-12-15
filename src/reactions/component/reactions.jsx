@@ -15,7 +15,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
       isClosed: false,
       sentiment: undefined,
       siteId: null,
-      ideaId: null,
+      ideaId: 34,
       title: null,
       user: null,
       loginUrl: '',
@@ -84,7 +84,7 @@ export default class OpenStadComponentReactions extends OpenStadComponent {
 
     let self = this;
 
-    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument?sentiment=${  self.config.sentiment  }&withUser=1&withUserVote=1&withVoteCount=1&includeReactionsOnReactions=1`;
+    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/34/argument?sentiment=${  self.config.sentiment  }&withUser=1&withUserVote=1&withVoteCount=1&includeReactionsOnReactions=1`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     fetch(url, { headers })

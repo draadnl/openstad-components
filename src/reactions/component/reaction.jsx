@@ -10,7 +10,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     super(props, {
       siteId: null,
-      ideaId: null,
+      ideaId: 34,
       title: null,
       descriptionMinLength: 30,
       descriptionMaxLength: 500,
@@ -108,7 +108,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     if (!self.canDelete()) return alert('U kunt deze reactie niet verwijderen');
 
-    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id}`;
+    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/34/argument/${  self.props.data.id}`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     let body = {};
@@ -127,7 +127,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
       .then(function(json) {
         self.setState({ isDeleted: true });
 
-		    let event = new CustomEvent('osc-reaction-deleted', { detail: { ideaId: self.config.ideaId } });
+		    let event = new CustomEvent('osc-reaction-deleted', { detail: { ideaId: 34 } });
 		    document.dispatchEvent(event);
 
       })
@@ -144,7 +144,7 @@ export default class OpenStadComponentReaction extends OpenStadComponent {
 
     if (!self.canLike()) return self.config.showNotLoggedInPopup();
 
-    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/${  self.config.ideaId  }/argument/${  self.props.data.id  }/vote`;
+    let url = `${self.config.api && self.config.api.url   }/api/site/${  self.config.siteId  }/idea/34/argument/${  self.props.data.id  }/vote`;
     let headers = OpenStadComponentLibs.api.getHeaders(self.config);
 
     let body = {};
