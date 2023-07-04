@@ -232,14 +232,14 @@ export default class OpenStadComponentQuestion extends OpenStadComponent {
     }
 
     let imageHTML = null;
-    let images = data.images || [];
-    if (images && images.length) {
-      if (!Array.isArray(images)) images = [images];
+    let images = data.images || {};
+    if (Object.keys(images).length > 0) {
+      images = Object.values(images); // Converteer object naar array
       let image = images[0];
       imageHTML = (
-        <div className={`osc-question-image-container`}>
-          <OpenStadComponentImage config={self.config} image={image}/>
-        </div>
+          <div className={`osc-question-image-container`}>
+            <OpenStadComponentImage config={self.config} image={image}/>
+          </div>
       );
     }
 
