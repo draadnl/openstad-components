@@ -78,6 +78,7 @@ export default class QuestionForm extends OpenStadComponent {
     }
     if (typeof data.newValue != 'undefined') {
       parsedData = { values: self.props.currentTarget.values || [] };
+      parsedData.values = Array.isArray(parsedData.values) ? parsedData.values : Array.from(parsedData.values || []);
       parsedData.values.push(data.newValue);
       this.setEditMode(parsedData.values.length - 1)
     }
