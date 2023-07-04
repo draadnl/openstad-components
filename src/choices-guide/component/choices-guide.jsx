@@ -105,7 +105,10 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     self.setState(state, () => {
       self.liveUpdates();
 		  var event = new window.CustomEvent('osc-choices-guide-is-ready');
-		  document.dispatchEvent(event);
+      
+      window.setTimeout(function() {
+        document.dispatchEvent(event);
+      }, 1000);
 
       // TMP
       // self.showEditForm()
