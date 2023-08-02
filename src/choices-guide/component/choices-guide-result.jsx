@@ -298,7 +298,11 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
   onFormChange() {
 
     let self = this;
-
+    
+    if (!self.form) {
+      return;
+    }
+    
     let allFormvalues = OpenStadComponentLibs.localStorage.get('osc-choices-guide.formvalues') || {};
     allFormvalues[self.config.choicesGuideId] = self.form.getValues();
     OpenStadComponentLibs.localStorage.set('osc-choices-guide.formvalues', allFormvalues);
@@ -344,7 +348,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
     let previousNextButtonsHTML = null;
     if (self.config.submission.type == 'form') {
       formHTML = (
-        <OpenStadComponentForms.Form config={ self.config.submission.form } onChange={self.onFormChange} ref={function(el) { if (el != null) { self.form = el;} }}/>
+        <OpenStadComponentForms.Form config={ self.config.submission.form } onChange={self.onFormChange} ref={function(el) { if (!!el) { self.form = el;} }}/>
       );
 
       if (requireLogin) {
