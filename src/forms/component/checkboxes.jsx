@@ -35,7 +35,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
     }
     
     componentDidMount() {
-        if (this.props.value) {
+        if (this.props.value && this.props.value.length > 0) {
             let newState     = {};
             newState.checked = this.state.checked;
             // Set correct state based on value
