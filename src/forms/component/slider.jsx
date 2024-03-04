@@ -1,6 +1,7 @@
 'use strict';
 
 import OpenStadComponent from '../../component/index.jsx';
+import React from 'react';
 
 class Slider extends OpenStadComponent {
   constructor(props){
@@ -10,6 +11,7 @@ class Slider extends OpenStadComponent {
       touched: this.props.touched || false,
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleExternalChange = this.handleExternalChange.bind(this);
   }
 
   handleChange(event) {
@@ -40,6 +42,23 @@ class Slider extends OpenStadComponent {
     const range = max - min
     const progInRange = value - min
     return ((progInRange*2)/range)-1
+  }
+
+  handleExternalChange(newValue) {
+    if (typeof newValue !== 'undefined') {
+      if(typeof this.props.onChange === 'function'){
+        this.props.onChange(newValue);
+      }
+      this.setState({ value: newValue, touched: true });
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('externalSliderChange', this.handleExternalChange);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('externalSliderChange', this.handleExternalChange);
   }
 
   render(){
