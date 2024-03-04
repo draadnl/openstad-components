@@ -16,10 +16,12 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
         }, defaultConfig);
         
         let values = [];
-        
-        this.props.config.choices.forEach((text, index) => {
-            values[index] = text;
-        });
+
+        if (this.props.config && this.props.config.choices && this.props.config.choices.length > 0) {
+            this.props.config.choices.forEach((text, index) => {
+                values[index] = text;
+            });
+        }
         
         this.state = {
             checked:         new Array(props.config.choices.length).fill(false),
@@ -35,7 +37,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
     }
     
     componentDidMount() {
-        if (this.props.value) {
+        if (this.props.value && this.props.value.length > 0) {
             let newState     = {};
             newState.checked = this.state.checked;
             // Set correct state based on value
@@ -146,7 +148,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
         
         return (
             <div className="osc-question-selector">
-                {choices && choices.map(({value, text}, index) => {
+                {choices && Array.isArray(choices) && choices.map(({value, text}, index) => {
                     const key     = parseInt(1000000 * Math.random());
                     const checked = this.state.checked[index] || false;
                     
