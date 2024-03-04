@@ -44,14 +44,18 @@ class Slider extends OpenStadComponent {
     return ((progInRange*2)/range)-1
   }
 
-  handleExternalChange(newValue) {
-    if (typeof newValue !== 'undefined') {
-      if(typeof this.props.onChange === 'function'){
-        this.props.onChange(newValue);
+  handleExternalChange(event) {
+    const { id, value } = event.detail;
+    if (id === this.props.divid) {
+      if (typeof value !== 'undefined') {
+        if (typeof this.props.onChange === 'function') {
+          this.props.onChange(value);
+        }
+        this.setState({ value: value, touched: true });
       }
-      this.setState({ value: newValue, touched: true });
     }
   }
+
 
   componentDidMount() {
     document.addEventListener('externalSliderChange', this.handleExternalChange);
