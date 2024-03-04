@@ -150,7 +150,10 @@ export default class QuestionForm extends OpenStadComponent {
     this.setState({ valueEditModeIndex: index }, () => {
       if (self.state.valueEditModeIndex != null) {
         let input = self[`osc-question-button-text-${self.state.valueEditModeIndex}`] && self[`osc-question-button-text-${self.state.valueEditModeIndex}`].input;
-        input.focus()
+
+        if (input) {
+          input.focus()
+        }
       }
     })
   }
