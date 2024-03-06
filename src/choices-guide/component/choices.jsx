@@ -47,7 +47,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
     let scores = {};
     self.choiceElements.forEach((choiceElement) => {
       if (choiceElement !== null) {
-        scores[choiceElement.config.divId] = choiceElement.calculateScore(answers);
+        scores[choiceElement.divId] = choiceElement.calculateScore(answers);
       }
     });
 
@@ -98,7 +98,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
       default:
         let sorted = Object.keys(scores).sort( (a,b) => scores[b].x - scores[a].x );
         let first = sorted[0];
-        return self.choiceElements.find( elem => elem && elem.config.divId == first );
+        return self.choiceElements.find( elem => elem && elem.divId == first );
     }
 
 
@@ -121,7 +121,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
 
             { Object.keys(self.props.choices).map((key, i) => {
               let choice = self.props.choices[key];
-              return (<OpenStadComponentChoice config={{ divId:`choice-${choice.id}`,  ...self.config }} data={choice} score={ self.props.scores && self.props.scores[`choice-${choice.id}`] } key={`choice-${choice.id}`} baseSize={baseSize} ref={function(el) { self.choiceElements[i] = el;}}/>);
+              return (<OpenStadComponentChoice config={{ ...self.config, divId:`choice-${choice.id}` }} data={choice} score={ self.props.scores && self.props.scores[`choice-${choice.id}`] } key={`choice-${choice.id}`} baseSize={baseSize} ref={function(el) { self.choiceElements[i] = el;}}/>);
             })}
             
             <div className="osc-point" style={{ top, left }}></div>
@@ -139,7 +139,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
           <ul className="osc-choices">
             { Object.keys(self.props.choices).map((key, i) => {
               let choice = self.props.choices[key];
-              return (<OpenStadComponentChoice config={{ divId:`choice-${choice.id}`,  ...self.config }} data={choice} score={ self.props.scores && self.props.scores[`choice-${choice.id}`] } key={`choice-${choice.id}`} ref={function(el) { self.choiceElements[i] = el;}}/>);
+              return (<OpenStadComponentChoice config={{ ...self.config, divId:`choice-${choice.id}` }} data={choice} score={ self.props.scores && self.props.scores[`choice-${choice.id}`] } key={`choice-${choice.id}`} ref={function(el) { self.choiceElements[i] = el;}}/>);
             })}
           </ul>
         );

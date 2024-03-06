@@ -7,6 +7,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
   constructor(props) {
 
     super(props, {
+      divId: '',
       type: 'default',
       withPercentage: false,
       minLabel: null,
@@ -31,7 +32,7 @@ export default class OpenStadComponentChoice extends OpenStadComponent {
     this.state = {
       score: this.props.score || 0,
     };
-
+    
   }
 
   getTitle(score, nameOnly) {
