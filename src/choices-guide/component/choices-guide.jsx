@@ -216,7 +216,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
 
   liveUpdates() {
     let self = this;
-    let answers = merge(self.state.values || {}, self.questionGroupElement.getAnswers());
+    let answers = merge(self.state.values || {}, self.questionGroupElement?.getAnswers() || {} );
     let scores;
     ( {scores} = self.choicesElement.calculateScores(answers) );
     self.setState({ scores, firstAnswerGiven: Object.keys(answers).length > 0 }, () => {
