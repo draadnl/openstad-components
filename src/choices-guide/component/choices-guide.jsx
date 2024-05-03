@@ -137,7 +137,6 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   gotoNextQuestion() {
-
     let self = this;
 
     let state = {};
@@ -151,13 +150,17 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       if (isReady) {
         self.gotoNextGroup();
       } else {
-        window.scrollTo(0,0)
+        if (self.choicesGuideDiv) {
+          self.choicesGuideDiv.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
-    })
-
+    });
   }
 
   gotoPreviousQuestion() {
+    const self = this;
 
     if (this.state.status == 'result') return this.gotoPreviousGroup();
 
@@ -172,13 +175,19 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       if (isBeginning) {
         this.gotoPreviousGroup();
       } else {
-        window.scrollTo(0,0)
+        const element = document.getElementById(self.divId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
     })
 
   }
 
   gotoNextGroup() {
+    const self = this;
 
     let state = { ...this.state };
     if (state.currentQuestionGroupIndex < state.questionGroups.length - 1) {
@@ -186,7 +195,11 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       state.currentQuestionGroupIndex++;
       this.setState(state, () => {
         this.liveUpdates();
-        window.scrollTo(0,0)
+        if (self.choicesGuideDiv) {
+          self.choicesGuideDiv.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       });
     } else {
       this.gotoResult();
@@ -195,6 +208,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
   }
 
   gotoPreviousGroup() {
+    const self = this;
 
     let state = {};
     state.currentQuestionGroupIndex = this.state.currentQuestionGroupIndex - 1;
@@ -204,7 +218,11 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     }
     this.setState(state, () => {
       this.liveUpdates();
-      window.scrollTo(0,0)
+      if (self.choicesGuideDiv) {
+        self.choicesGuideDiv.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
     
   }
@@ -344,6 +362,10 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           nextAction = () => { self.gotoNextQuestion(); }
           nextLabel = 'Volgende'
         }
+
+        if (this.state.currentQuestionGroupIndex >= this.state.questionGroups.length - 1) {
+          nextLabel = 'Versturen'
+        }
         
         let previousNextButtonsHTML = null;
         if ( previousLabel || nextLabel ) {
@@ -363,7 +385,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     }
 
     return (
-      <div id={this.divId} className="osc-choices-guide">
+      <div id={this.divId} className="osc-choices-guide" ref={(ref) => { this.choicesGuideDiv = ref; }}>
         <OpenStadComponentLightbox/>
         {imageHTML}
         {contentHTML}
