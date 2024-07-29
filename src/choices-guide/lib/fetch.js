@@ -19,6 +19,7 @@ function fetchChoicesGuide({ config }) {
         description: json.description,
         choices: json.choices || [],
         questionGroups: json.questiongroups || [],
+        showPageCountAndCurrentPageInButton: json.showPageCountAndCurrentPageInButton !== null ? json.showPageCountAndCurrentPageInButton : false,
         status: 'active',
       };
 

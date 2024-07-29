@@ -99,6 +99,8 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
         self.setState({ ...data, questionGroupId }, () => {
           // override config settings
           self.config.submission.type = data.choicesGuideConfig.submissionType || self.config.submission.type;
+          self.config.submission.type = self.config.submission.type === 'none' ? 'auto' : self.config.submission.type;
+
           self.startGuide();
         });
       })
@@ -189,7 +191,7 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       })
       return;
     };
-    
+
     FingerprintJS.load().then(fp => {
       fp.get().then(result => {
         const visitorId = result.visitorId;
@@ -217,13 +219,16 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
             throw response.text();
           })
           .then(function(json) {
-            if (self.config.submission.type == 'form') {
+            if (self.config.submission.type === 'form' || self.config.submission.type === 'auto') {
               OpenStadComponentLibs.localStorage.remove('osc-choices-guide.values');
               OpenStadComponentLibs.localStorage.remove('osc-choices-guide.scores');
               OpenStadComponentLibs.localStorage.remove('osc-choices-guide.formvalues');
               if (requireLogin) {
                 return self.logout({ afterUrl: self.config.afterUrl })
               }
+
+              if ( document.location.href === self.config.afterUrl || !self.config.afterUrl) return;
+
               return document.location.href = self.config.afterUrl
             }
           })

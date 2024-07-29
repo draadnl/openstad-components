@@ -146,6 +146,10 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     self.choicesElement.calculateScores(state.values);
 
     let { isReady, currentQuestion } = self.questionGroupElement.gotoNextQuestion();
+    currentQuestion = typeof currentQuestion === 'undefined'
+      ? ( self.state.currentQuestion !== null ? self.state.currentQuestion : 0 )
+      : currentQuestion;
+
     self.setState({currentQuestion}, () => {
       if (isReady) {
         self.gotoNextGroup();
@@ -171,6 +175,10 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     this.choicesElement.calculateScores(state.values);
 
     let { isBeginning, currentQuestion } = this.questionGroupElement.gotoPreviousQuestion();
+    currentQuestion = typeof currentQuestion === 'undefined'
+      ? ( self.state.currentQuestion !== null ? self.state.currentQuestion : 0 )
+      : currentQuestion;
+
     this.setState({currentQuestion}, () => {
       if (isBeginning) {
         this.gotoPreviousGroup();
@@ -326,6 +334,36 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           </div>
         );
       } else {
+        let progressHTML = null;
+        let currentPage = 1;
+        let totalPages = 1;
+
+        if (self.state.questionGroups.length > 0) {
+          const noOfQuestionsToShow = this.config.noOfQuestionsToShow || 100;
+          const currentGroupIndex = self.state.currentQuestionGroupIndex;
+
+          const totalQuestionsAnswered = self.state.questionGroups
+            .slice(0, currentGroupIndex) // Alle vraaggroepen tot aan de huidige groep
+            .reduce((acc, curr) => acc + curr.questions.length, 0); // Sommeer de lengte van elke vraaggroep
+
+          const totalQuestions = self.state.questionGroups.reduce((acc, curr) => acc + curr.questions.length, 0);
+          totalPages = Math.ceil(totalQuestions / noOfQuestionsToShow);
+
+          currentPage = 1;
+          if (!isNaN(self.state.currentQuestion)) {
+            currentPage = Math.ceil((totalQuestionsAnswered + self.state.currentQuestion + 1) / noOfQuestionsToShow);
+          }
+
+          if ( this.config.showPageCountAndCurrentPageInButton ) {
+            progressHTML = (
+              <div className="osc-progress">
+                <p>
+                  Vraag {currentPage} van {totalPages}
+                </p>
+              </div>
+            );
+          }
+        }
 
         let choicesHTML = (
           <div id={'osc-choices-container-' + this.divId} className={`osc-choices-container osc-accordeon osc-closed ${'osc-type-' + self.config.choices.type}`} ref={el => { self.choicesAccordeon = el; }}>
@@ -337,7 +375,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         );
 
         let questionGroupHTML = (
-          <OpenStadComponentQuestionGroup config={self.config} data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} key={`group${self.state.currentQuestionsGroupIndex}`}/>
+          <OpenStadComponentQuestionGroup config={self.config} data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} progressHTML={progressHTML} key={`group${self.state.currentQuestionsGroupIndex}`}/>
         );
 
         let editButtonHTML = null;
@@ -363,7 +401,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
           nextLabel = 'Volgende'
         }
 
-        if (this.state.currentQuestionGroupIndex >= this.state.questionGroups.length - 1) {
+        if (currentPage === totalPages && ( (self.state.currentQuestionGroupIndex + 1) === this.state.questionGroups.length ) ) {
           nextLabel = 'Versturen'
         }
         

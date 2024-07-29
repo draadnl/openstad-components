@@ -113,6 +113,7 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
         { shownQuestions.map((question, i) => {
           return <OpenStadComponentQuestion config={ { ...self.config, divId: `osc-question-${question.id}` } } data={{ ...question, value: values[question.id] }} key={`question-${question.id}`} ref={function(el) { self.questionElements[i] = el; }}/>;
         })}
+        { self.props.progressHTML }
       </div>;
 
     return (

@@ -123,16 +123,10 @@
     }
 
     &.osc-error {
-
       border: solid 2px #ec0000;
 
       .osc-image {
-        width: 656px;
-
-        @media @phone {
-          width: 100%;
-        }
-
+        width: 100%;
       }
 
       .osc-radio-container {
@@ -148,8 +142,12 @@
       font-weight: bold;
       color: #ec0000;
     }
+  }
 
-
+  .osc-progress p {
+    margin: 0;
+    text-align: right;
+    font-size: 15px;
   }
 }
 

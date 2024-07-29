@@ -63,7 +63,7 @@ export default class OpenStadComponentChoices extends OpenStadComponent {
         keys.forEach((key) => {
           let entry = answers[key];
           ['x','y','z'].forEach((dimension) => {
-            if ( typeof entry[dimension] != 'undefined' ) {
+            if ( typeof entry[dimension] != 'undefined' && key !== '351' && key !== '348' && key !== '349' ) {
               planePos[dimension] += parseInt(entry[dimension]) || 0;
               lengths[dimension]++
             }
