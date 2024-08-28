@@ -16,13 +16,15 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentDefau
 
   constructor(props) {
 
+    const imageEndpoint = siteUrl ? siteUrl + '/image' : '/image';
+    
     super(props, {
       name: 'image',
       allowMultiple: false,
 			image: {
         server: {
-				  process: '/image',
-				  fetch: '/image'
+				  process: imageEndpoint,
+				  fetch: imageEndpoint
 			  },
 			},
     });
@@ -106,7 +108,7 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentDefau
       oninit={self.init}
       onprocessfile={( err, file ) => self.updateUploadedFiles({ addFile: file, next: files => self.updateValue(files) })}
       onremovefile={( err, file ) => self.updateUploadedFiles({ removeFile: file, next: files => self.updateValue(files) })}
-        
+      
       name="image"
       server={this.config.image.server.process}
       allowMultiple={this.config.allowMultiple}
@@ -153,5 +155,3 @@ export default class OpenStadComponentImageUpload extends OpenStadComponentDefau
 
   }
 }
-
-

@@ -166,7 +166,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
       case 'choices-guide':
         currentTarget.title = this.state.title;
         currentTarget.description = this.state.description;
-        currentTarget.images = this.state.images ? this.state.images : '';
+        currentTarget.images = this.state.images ? this.transformToArray(this.state.images) : '';
         currentTarget.choicesGuideConfig = this.state.choicesGuideConfig ? this.state.choicesGuideConfig : {};
         break;
 
@@ -180,7 +180,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.questionGroup = questionGroup;
         currentTarget.title = choice.title;
         currentTarget.description = choice.description;
-        currentTarget.images = choice.images;
+        currentTarget.images = this.transformToArray(choice.images);
         currentTarget.answers = choice.answers;
         currentTarget.seqnr = typeof choice.seqnr != 'undefined' ? choice.seqnr : ( questionGroup.choices && questionGroup.choices[questionGroup.choices.length - 1] && parseInt(questionGroup.choices[questionGroup.choices.length - 1].seqnr) + 10 || 10 );
         break;
@@ -200,7 +200,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
         currentTarget.title = question.title;
         currentTarget.description = question.description;
         currentTarget.moreInfo = question.moreInfo;
-        currentTarget.images = question.images;
+        currentTarget.images = this.transformToArray(question.images);
         currentTarget.minLabel = question.minLabel;
         currentTarget.maxLabel = question.maxLabel;
         currentTarget.type = question.type;
@@ -263,6 +263,13 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
     return url;
   }
   
+  transformToArray(obj) {
+    if (typeof obj == 'object' && !Array.isArray(obj)) {
+      obj = Object.keys(obj).map(Number).map(key => obj[key]);
+    }
+    return obj;
+  }
+  
   submitForm() {
 
     let self = this;
@@ -301,7 +308,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
           body = {
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
-            images: self.state.currentTarget.images,
+            images: this.transformToArray(self.state.currentTarget.images),
             answers: self.state.currentTarget.answers,
             seqnr: self.state.currentTarget.seqnr,
           };
@@ -329,7 +336,7 @@ export default class OpenStadComponentChoicesGuideForm extends OpenStadComponent
             title: self.state.currentTarget.title,
             description: self.state.currentTarget.description,
             moreInfo: self.state.currentTarget.moreInfo,
-            images: self.state.currentTarget.images,
+            images: this.transformToArray(self.state.currentTarget.images),
             minLabel: self.state.currentTarget.minLabel,
             maxLabel: self.state.currentTarget.maxLabel,
             type: self.state.currentTarget.type,
