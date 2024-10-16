@@ -36,11 +36,8 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
       if ( !self.questionElements[i].isValid() ) {
         if (!scrollDone) {
           setTimeout( () => {
-            console.log(self.questionElements[i]);
-            console.log(self.questionElements[i].questionId);
             let elem = document.querySelector(`#osc-question-${self.questionElements[i].questionId}-content`);
-            console.log(elem);
-            elem && elem.scrollIntoView({behavior: 'smooth'})
+            elem && elem.scrollIntoView({ behavior: 'smooth' });
           }, 250 );
         }
         scrollDone = true;
@@ -74,7 +71,10 @@ export default class OpenStadComponentQuestionGroup extends OpenStadComponent {
     let currentQuestion = this.state.currentQuestion + this.noOfQuestionsToShow;
 
     if (currentQuestion >= this.props.data.questions.length) {
-      currentQuestion = 0;
+      if ( this.props.currentQuestionGroupIndex < this.props.allQuestionGroups.length - 1 ) {
+        currentQuestion = 0;
+      }
+
       this.setState({ currentQuestion });
       return { isReady: true, currentQuestion };
     }

@@ -63,6 +63,10 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
       allValues = resultdata.result.answers;
       allScores = resultdata.result.scores;
     }
+
+    if ( !!this.config.submission.form ) {
+      this.config.submission.type = 'form';
+    }
     
     if (this.config.submission.type == 'form') {
       this.onFormChange = this.onFormChange.bind(this);
@@ -100,6 +104,10 @@ export default class OpenStadComponentChoicesGuideResult extends OpenStadCompone
           // override config settings
           self.config.submission.type = data.choicesGuideConfig.submissionType || self.config.submission.type;
           self.config.submission.type = self.config.submission.type === 'none' ? 'auto' : self.config.submission.type;
+
+          if ( !!self.config.submission.form ) {
+            self.config.submission.type = 'form';
+          }
 
           self.startGuide();
         });

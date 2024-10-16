@@ -150,17 +150,17 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
       ? ( self.state.currentQuestion !== null ? self.state.currentQuestion : 0 )
       : currentQuestion;
 
-    self.setState({currentQuestion}, () => {
-      if (isReady) {
-        self.gotoNextGroup();
-      } else {
+    if (isReady) {
+      self.gotoNextGroup();
+    } else {
+      self.setState({currentQuestion}, () => {
         if (self.choicesGuideDiv) {
-          self.choicesGuideDiv.scrollIntoView({ behavior: 'smooth' });
+          self.choicesGuideDiv.scrollIntoView({behavior: 'smooth'});
         } else {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({top: 0, behavior: 'smooth'});
         }
-      }
-    });
+      });
+    }
   }
 
   gotoPreviousQuestion() {
@@ -201,6 +201,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
     if (state.currentQuestionGroupIndex < state.questionGroups.length - 1) {
       state.values = merge(state.values || {}, this.questionGroupElement.getAnswers());
       state.currentQuestionGroupIndex++;
+      state.currentQuestion = 0;
       this.setState(state, () => {
         this.liveUpdates();
         if (self.choicesGuideDiv) {
@@ -358,7 +359,7 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
             progressHTML = (
               <div className="osc-progress">
                 <p>
-                  Vraag {currentPage} van {totalPages}
+                  Pagina {currentPage} van {totalPages}
                 </p>
               </div>
             );
@@ -375,7 +376,15 @@ export default class OpenStadComponentChoicesGuide extends OpenStadComponent {
         );
 
         let questionGroupHTML = (
-          <OpenStadComponentQuestionGroup config={self.config} data={ questionGroup } ref={function(el) { self.questionGroupElement = el; }} progressHTML={progressHTML} key={`group${self.state.currentQuestionsGroupIndex}`}/>
+          <OpenStadComponentQuestionGroup
+            config={self.config}
+            data={ questionGroup }
+            ref={function(el) { self.questionGroupElement = el; }}
+            progressHTML={progressHTML}
+            key={`group${self.state.currentQuestionsGroupIndex}`}
+            currentQuestionGroupIndex={this.state.currentQuestionGroupIndex}
+            allQuestionGroups={this.state.questionGroups}
+          />
         );
 
         let editButtonHTML = null;
