@@ -17,7 +17,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
         
         let values = [];
         
-        this.props.config.choices.forEach((text, index) => {
+        this.props.config?.choices && Array.isArray(this.props.config.choices) && this.props.config.choices.forEach((text, index) => {
             values[index] = text;
         });
         
@@ -146,7 +146,7 @@ export default class OpenStadComponentCheckboxes extends OpenStadComponentDefaul
         
         return (
             <div className="osc-question-selector">
-                {choices && choices.map(({value, text}, index) => {
+                {choices && Array.isArray(choices) && choices.map(({value, text}, index) => {
                     const key     = parseInt(1000000 * Math.random());
                     const checked = this.state.checked[index] || false;
                     
